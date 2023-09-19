@@ -1,0 +1,112 @@
+---
+title: "Practice 2.2"
+author: "Nathanaël LAHARY : T12508101"
+date: "2023-09-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data
+
+Downlad datasheet : [link](https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt)
+
+```{r data, echo=FALSE,fig.width=120}
+options(width = 120)
+rairuoho<-read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt',
+                     header=T, 
+                     sep="\t")
+rairuoho
+```
+
+# Code 
+
+Github reposit : [link]()
+
+### Import the data
+```{r data_import}
+rairuoho<-read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt',
+                     header=T, 
+                     sep="\t")
+``` 
+
+### Import the libraries
+```{r libraries, message=FALSE}
+
+library(tidyr)
+library(dplyr)
+```
+
+### Data cleaning
+
+**STEP 1: **Format the table in order to have the day as a single variable. Length will be created to receive the length of the grass at the given day.
+
+```{r pivot}
+rairuoho_formated <- rairuoho %>% 
+  pivot_longer(cols=day3:day8,names_to = "day", values_to = "length")
+rairuoho_formated
+```
+ 
+**STEP 2: **Replace nutrient with enriched in the data set. Make day as a single variable (factor) containing 6 levels (day3, day4, day5, day6, day7, day8).
+
+```{r mutate}
+rairuoho_formated <- rairuoho %>% 
+  pivot_longer(cols=day3:day8,names_to = "day", values_to = "length") %>%
+  mutate(treatment = ifelse(treatment=="nutrient","enriched",treatment),
+         day = factor(day,levels = c("day3","day4","day5","day6","day7","day8")))
+rairuoho_formated
+```
+
+**STEP 3: **Merge variables Spatial1 and Spatial2 in order to obtain the following format for the spatial coordinates of an observation upper_left.
+
+```{r unite}
+rairuoho_formated <- rairuoho %>% 
+  pivot_longer(cols=day3:day8,names_to = "day", values_to = "length") %>%
+  mutate(treatment = ifelse(treatment=="nutrient","enriched",treatment),
+         day = factor(day,levels = c("day3","day4","day5","day6","day7","day8"))) %>%
+  unite(c("spatial1","spatial2"),col="Spatial",sep = "_")
+
+rairuoho_formated
+```
+
+**STEP 4: **Remove variables row and column.
+```{r remove}
+rairuoho_formated <- rairuoho %>% 
+  pivot_longer(cols=day3:day8,names_to = "day", values_to = "length") %>%
+  mutate(treatment = ifelse(treatment=="nutrient","enriched",treatment),
+         day = factor(day,levels = c("day3","day4","day5","day6","day7","day8"))) %>%
+  unite(c("spatial1","spatial2"),col="Spatial",sep = "_") %>%
+  select(-row,-column) # mutate(row=NULL,column=NULL) also works
+
+rairuoho_formated
+```
+### Full code
+```{r fullcode}
+library(tidyr)
+library(dplyr)
+
+rairuoho<-read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/rairuoho.txt',
+                     header=T, 
+                     sep="\t")
+
+rairuoho_formated <- rairuoho %>% 
+  pivot_longer(cols=day3:day8,names_to = "day", values_to = "length") %>%
+  mutate(treatment = ifelse(treatment=="nutrient","enriched",treatment),
+         day = factor(day,levels = c("day3","day4","day5","day6","day7","day8"))) %>%
+  unite(c("spatial1","spatial2"),col="Spatial",sep = "_") %>%
+  mutate(row = NULL, column = NULL)
+
+
+# Another method 
+#
+# rairuoho$treatment <- ifelse(rairuoho$treatment=="nutrient","enriched","water")
+# rairuoho$row = NULL
+# rairuoho$colum = NULL
+# rairuoho_formated_bis <- rairuoho %>%
+#   pivot_longer(cols = day3:day8, names_to = "day", values_to = "length") %>%
+#   mutate(day = factor(day, levels = c("day3","day4","day5","day6","day7","day8")))
+
+```
+
