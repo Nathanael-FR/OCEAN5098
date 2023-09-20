@@ -475,7 +475,7 @@ observation upper_left.</p>
   pivot_longer(cols=day3:day8,names_to = &quot;day&quot;, values_to = &quot;length&quot;) %&gt;%
   mutate(treatment = ifelse(treatment==&quot;nutrient&quot;,&quot;enriched&quot;,treatment),
          day = factor(day,levels = c(&quot;day3&quot;,&quot;day4&quot;,&quot;day5&quot;,&quot;day6&quot;,&quot;day7&quot;,&quot;day8&quot;))) %&gt;%
-  unite(c(&quot;spatial1&quot;,&quot;spatial2&quot;),col=&quot;Spatial&quot;,sep = &quot;_&quot;)
+  unite(c(&quot;spatial1&quot;,&quot;spatial2&quot;),col=&quot;Spatial&quot;,sep = &quot;_&quot;) # Function found in the cheat sheet p17
 
 rairuoho_formated</code></pre>
 <pre><code>## # A tibble: 288 × 8
@@ -497,7 +497,7 @@ rairuoho_formated</code></pre>
   pivot_longer(cols=day3:day8,names_to = &quot;day&quot;, values_to = &quot;length&quot;) %&gt;%
   mutate(treatment = ifelse(treatment==&quot;nutrient&quot;,&quot;enriched&quot;,treatment),
          day = factor(day,levels = c(&quot;day3&quot;,&quot;day4&quot;,&quot;day5&quot;,&quot;day6&quot;,&quot;day7&quot;,&quot;day8&quot;))) %&gt;%
-  unite(c(&quot;spatial1&quot;,&quot;spatial2&quot;),col=&quot;Spatial&quot;,sep = &quot;_&quot;) %&gt;%
+  unite(c(&quot;spatial1&quot;,&quot;spatial2&quot;),col=&quot;Spatial&quot;,sep = &quot;_&quot;) %&gt;% # Function found in the cheat sheet p17
   select(-row,-column) # mutate(row=NULL,column=NULL) also works
 
 rairuoho_formated</code></pre>
@@ -529,7 +529,7 @@ rairuoho_formated &lt;- rairuoho %&gt;%
   pivot_longer(cols=day3:day8,names_to = &quot;day&quot;, values_to = &quot;length&quot;) %&gt;%
   mutate(treatment = ifelse(treatment==&quot;nutrient&quot;,&quot;enriched&quot;,treatment),
          day = factor(day,levels = c(&quot;day3&quot;,&quot;day4&quot;,&quot;day5&quot;,&quot;day6&quot;,&quot;day7&quot;,&quot;day8&quot;))) %&gt;%
-  unite(c(&quot;spatial1&quot;,&quot;spatial2&quot;),col=&quot;Spatial&quot;,sep = &quot;_&quot;) %&gt;%
+  unite(c(&quot;spatial1&quot;,&quot;spatial2&quot;),col=&quot;Spatial&quot;,sep = &quot;_&quot;) %&gt;% # Function found in the cheat sheet p17
   select(-row,-column) # mutate(row=NULL,column=NULL) also works
 
 
@@ -542,6 +542,300 @@ rairuoho_formated &lt;- rairuoho %&gt;%
 #   pivot_longer(cols = day3:day8, names_to = &quot;day&quot;, values_to = &quot;length&quot;) %&gt;%
 #   mutate(day = factor(day, levels = c(&quot;day3&quot;,&quot;day4&quot;,&quot;day5&quot;,&quot;day6&quot;,&quot;day7&quot;,&quot;day8&quot;))) %&gt;%
 #   unite(c(&quot;spatial1&quot;,&quot;spatial2&quot;),col=&quot;Spatial&quot;,sep = &quot;_&quot;)</code></pre>
+</div>
+<div id="results" class="section level3">
+<h3>Results</h3>
+<pre><code>## # A tibble: 288 × 6
+##     germinate bed    treatment Spatial      day   length
+##         &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;        &lt;fct&gt;  &lt;int&gt;
+##   1        18 paper4 enriched  upper_left   day3       2
+##   2        18 paper4 enriched  upper_left   day4      13
+##   3        18 paper4 enriched  upper_left   day5      34
+##   4        18 paper4 enriched  upper_left   day6      85
+##   5        18 paper4 enriched  upper_left   day7     112
+##   6        18 paper4 enriched  upper_left   day8     121
+##   7        19 mould1 enriched  upper_left   day3       5
+##   8        19 mould1 enriched  upper_left   day4      22
+##   9        19 mould1 enriched  upper_left   day5      60
+##  10        19 mould1 enriched  upper_left   day6      95
+##  11        19 mould1 enriched  upper_left   day7     108
+##  12        19 mould1 enriched  upper_left   day8     116
+##  13        18 paper8 enriched  upper_left   day3       5
+##  14        18 paper8 enriched  upper_left   day4      26
+##  15        18 paper8 enriched  upper_left   day5      34
+##  16        18 paper8 enriched  upper_left   day6      73
+##  17        18 paper8 enriched  upper_left   day7      96
+##  18        18 paper8 enriched  upper_left   day8     111
+##  19        17 mould2 enriched  upper_left   day3       7
+##  20        17 mould2 enriched  upper_left   day4      24
+##  21        17 mould2 enriched  upper_left   day5      61
+##  22        17 mould2 enriched  upper_left   day6      91
+##  23        17 mould2 enriched  upper_left   day7     101
+##  24        17 mould2 enriched  upper_left   day8     117
+##  25        12 paper4 enriched  lower_left   day3       0
+##  26        12 paper4 enriched  lower_left   day4       9
+##  27        12 paper4 enriched  lower_left   day5      31
+##  28        12 paper4 enriched  lower_left   day6      61
+##  29        12 paper4 enriched  lower_left   day7      92
+##  30        12 paper4 enriched  lower_left   day8     116
+##  31        18 mould1 enriched  lower_left   day3       7
+##  32        18 mould1 enriched  lower_left   day4      30
+##  33        18 mould1 enriched  lower_left   day5      66
+##  34        18 mould1 enriched  lower_left   day6      91
+##  35        18 mould1 enriched  lower_left   day7     116
+##  36        18 mould1 enriched  lower_left   day8     129
+##  37        19 paper8 enriched  lower_left   day3       0
+##  38        19 paper8 enriched  lower_left   day4      11
+##  39        19 paper8 enriched  lower_left   day5      26
+##  40        19 paper8 enriched  lower_left   day6      61
+##  41        19 paper8 enriched  lower_left   day7      92
+##  42        19 paper8 enriched  lower_left   day8     109
+##  43        15 mould2 enriched  lower_left   day3       5
+##  44        15 mould2 enriched  lower_left   day4      31
+##  45        15 mould2 enriched  lower_left   day5      78
+##  46        15 mould2 enriched  lower_left   day6     110
+##  47        15 mould2 enriched  lower_left   day7     121
+##  48        15 mould2 enriched  lower_left   day8     126
+##  49        19 paper4 water     upper_left   day3       2
+##  50        19 paper4 water     upper_left   day4      17
+##  51        19 paper4 water     upper_left   day5      37
+##  52        19 paper4 water     upper_left   day6      74
+##  53        19 paper4 water     upper_left   day7      81
+##  54        19 paper4 water     upper_left   day8      81
+##  55        18 mould1 water     upper_left   day3       3
+##  56        18 mould1 water     upper_left   day4      19
+##  57        18 mould1 water     upper_left   day5      52
+##  58        18 mould1 water     upper_left   day6      93
+##  59        18 mould1 water     upper_left   day7     103
+##  60        18 mould1 water     upper_left   day8     106
+##  61        17 paper8 water     upper_left   day3       4
+##  62        17 paper8 water     upper_left   day4      14
+##  63        17 paper8 water     upper_left   day5      41
+##  64        17 paper8 water     upper_left   day6      62
+##  65        17 paper8 water     upper_left   day7      74
+##  66        17 paper8 water     upper_left   day8      88
+##  67        18 mould2 water     upper_left   day3       9
+##  68        18 mould2 water     upper_left   day4      26
+##  69        18 mould2 water     upper_left   day5      62
+##  70        18 mould2 water     upper_left   day6      94
+##  71        18 mould2 water     upper_left   day7     106
+##  72        18 mould2 water     upper_left   day8     110
+##  73        15 paper4 water     lower_left   day3       3
+##  74        15 paper4 water     lower_left   day4       9
+##  75        15 paper4 water     lower_left   day5      31
+##  76        15 paper4 water     lower_left   day6      61
+##  77        15 paper4 water     lower_left   day7      80
+##  78        15 paper4 water     lower_left   day8      95
+##  79        17 mould1 water     lower_left   day3       7
+##  80        17 mould1 water     lower_left   day4      27
+##  81        17 mould1 water     lower_left   day5      56
+##  82        17 mould1 water     lower_left   day6      79
+##  83        17 mould1 water     lower_left   day7      95
+##  84        17 mould1 water     lower_left   day8      99
+##  85        18 paper8 water     lower_left   day3       3
+##  86        18 paper8 water     lower_left   day4      16
+##  87        18 paper8 water     lower_left   day5      50
+##  88        18 paper8 water     lower_left   day6      77
+##  89        18 paper8 water     lower_left   day7      87
+##  90        18 paper8 water     lower_left   day8     102
+##  91        16 mould2 water     lower_left   day3       5
+##  92        16 mould2 water     lower_left   day4      23
+##  93        16 mould2 water     lower_left   day5      59
+##  94        16 mould2 water     lower_left   day6      86
+##  95        16 mould2 water     lower_left   day7      86
+##  96        16 mould2 water     lower_left   day8      99
+##  97        13 paper4 enriched  upper_middle day3       2
+##  98        13 paper4 enriched  upper_middle day4       4
+##  99        13 paper4 enriched  upper_middle day5      45
+## 100        13 paper4 enriched  upper_middle day6      50
+## 101        13 paper4 enriched  upper_middle day7      60
+## 102        13 paper4 enriched  upper_middle day8      86
+## 103        11 mould1 enriched  upper_middle day3       0
+## 104        11 mould1 enriched  upper_middle day4      19
+## 105        11 mould1 enriched  upper_middle day5      53
+## 106        11 mould1 enriched  upper_middle day6      85
+## 107        11 mould1 enriched  upper_middle day7     111
+## 108        11 mould1 enriched  upper_middle day8     122
+## 109        16 paper8 enriched  upper_middle day3       0
+## 110        16 paper8 enriched  upper_middle day4      11
+## 111        16 paper8 enriched  upper_middle day5      40
+## 112        16 paper8 enriched  upper_middle day6      81
+## 113        16 paper8 enriched  upper_middle day7     107
+## 114        16 paper8 enriched  upper_middle day8     125
+## 115        18 mould2 enriched  upper_middle day3       5
+## 116        18 mould2 enriched  upper_middle day4      31
+## 117        18 mould2 enriched  upper_middle day5      72
+## 118        18 mould2 enriched  upper_middle day6     101
+## 119        18 mould2 enriched  upper_middle day7     114
+## 120        18 mould2 enriched  upper_middle day8     120
+## 121        11 paper4 enriched  lower_middle day3       8
+## 122        11 paper4 enriched  lower_middle day4      20
+## 123        11 paper4 enriched  lower_middle day5      46
+## 124        11 paper4 enriched  lower_middle day6      79
+## 125        11 paper4 enriched  lower_middle day7      92
+## 126        11 paper4 enriched  lower_middle day8     109
+## 127        15 mould1 enriched  lower_middle day3       7
+## 128        15 mould1 enriched  lower_middle day4      30
+## 129        15 mould1 enriched  lower_middle day5      67
+## 130        15 mould1 enriched  lower_middle day6      87
+## 131        15 mould1 enriched  lower_middle day7     110
+## 132        15 mould1 enriched  lower_middle day8     122
+## 133        20 paper8 enriched  lower_middle day3       1
+## 134        20 paper8 enriched  lower_middle day4      14
+## 135        20 paper8 enriched  lower_middle day5      37
+## 136        20 paper8 enriched  lower_middle day6      71
+## 137        20 paper8 enriched  lower_middle day7      99
+## 138        20 paper8 enriched  lower_middle day8     107
+## 139        20 mould2 enriched  lower_middle day3       9
+## 140        20 mould2 enriched  lower_middle day4      29
+## 141        20 mould2 enriched  lower_middle day5      65
+## 142        20 mould2 enriched  lower_middle day6      92
+## 143        20 mould2 enriched  lower_middle day7     108
+## 144        20 mould2 enriched  lower_middle day8     119
+## 145        18 paper4 water     upper_middle day3       3
+## 146        18 paper4 water     upper_middle day4      18
+## 147        18 paper4 water     upper_middle day5      25
+## 148        18 paper4 water     upper_middle day6      69
+## 149        18 paper4 water     upper_middle day7      60
+## 150        18 paper4 water     upper_middle day8      93
+## 151        15 mould1 water     upper_middle day3       3
+## 152        15 mould1 water     upper_middle day4      21
+## 153        15 mould1 water     upper_middle day5      43
+## 154        15 mould1 water     upper_middle day6      72
+## 155        15 mould1 water     upper_middle day7      87
+## 156        15 mould1 water     upper_middle day8     110
+## 157        17 paper8 water     upper_middle day3       4
+## 158        17 paper8 water     upper_middle day4      14
+## 159        17 paper8 water     upper_middle day5      41
+## 160        17 paper8 water     upper_middle day6      68
+## 161        17 paper8 water     upper_middle day7      82
+## 162        17 paper8 water     upper_middle day8      93
+## 163        16 mould2 water     upper_middle day3      11
+## 164        16 mould2 water     upper_middle day4      32
+## 165        16 mould2 water     upper_middle day5      70
+## 166        16 mould2 water     upper_middle day6      92
+## 167        16 mould2 water     upper_middle day7     103
+## 168        16 mould2 water     upper_middle day8     108
+## 169        17 paper4 water     lower_middle day3       0
+## 170        17 paper4 water     lower_middle day4      13
+## 171        17 paper4 water     lower_middle day5      38
+## 172        17 paper4 water     lower_middle day6      67
+## 173        17 paper4 water     lower_middle day7      89
+## 174        17 paper4 water     lower_middle day8      95
+## 175        19 mould1 water     lower_middle day3       7
+## 176        19 mould1 water     lower_middle day4      27
+## 177        19 mould1 water     lower_middle day5      56
+## 178        19 mould1 water     lower_middle day6      77
+## 179        19 mould1 water     lower_middle day7      91
+## 180        19 mould1 water     lower_middle day8     102
+## 181        20 paper8 water     lower_middle day3       0
+## 182        20 paper8 water     lower_middle day4      10
+## 183        20 paper8 water     lower_middle day5      34
+## 184        20 paper8 water     lower_middle day6      67
+## 185        20 paper8 water     lower_middle day7      85
+## 186        20 paper8 water     lower_middle day8      88
+## 187        19 mould2 water     lower_middle day3       6
+## 188        19 mould2 water     lower_middle day4      28
+## 189        19 mould2 water     lower_middle day5      56
+## 190        19 mould2 water     lower_middle day6      83
+## 191        19 mould2 water     lower_middle day7      99
+## 192        19 mould2 water     lower_middle day8     108
+## 193         6 paper4 enriched  upper_right  day3       1
+## 194         6 paper4 enriched  upper_right  day4       9
+## 195         6 paper4 enriched  upper_right  day5      48
+## 196         6 paper4 enriched  upper_right  day6      70
+## 197         6 paper4 enriched  upper_right  day7      73
+## 198         6 paper4 enriched  upper_right  day8      87
+## 199        14 mould1 enriched  upper_right  day3       2
+## 200        14 mould1 enriched  upper_right  day4      21
+## 201        14 mould1 enriched  upper_right  day5      62
+## 202        14 mould1 enriched  upper_right  day6      81
+## 203        14 mould1 enriched  upper_right  day7      90
+## 204        14 mould1 enriched  upper_right  day8     115
+## 205        15 paper8 enriched  upper_right  day3       2
+## 206        15 paper8 enriched  upper_right  day4      17
+## 207        15 paper8 enriched  upper_right  day5      30
+## 208        15 paper8 enriched  upper_right  day6      71
+## 209        15 paper8 enriched  upper_right  day7      93
+## 210        15 paper8 enriched  upper_right  day8     126
+## 211        20 mould2 enriched  upper_right  day3       7
+## 212        20 mould2 enriched  upper_right  day4      25
+## 213        20 mould2 enriched  upper_right  day5      64
+## 214        20 mould2 enriched  upper_right  day6      82
+## 215        20 mould2 enriched  upper_right  day7     102
+## 216        20 mould2 enriched  upper_right  day8     106
+## 217        13 paper4 enriched  lower_right  day3       0
+## 218        13 paper4 enriched  lower_right  day4       4
+## 219        13 paper4 enriched  lower_right  day5      17
+## 220        13 paper4 enriched  lower_right  day6      41
+## 221        13 paper4 enriched  lower_right  day7      66
+## 222        13 paper4 enriched  lower_right  day8      81
+## 223        12 mould1 enriched  lower_right  day3       4
+## 224        12 mould1 enriched  lower_right  day4      22
+## 225        12 mould1 enriched  lower_right  day5      59
+## 226        12 mould1 enriched  lower_right  day6      91
+## 227        12 mould1 enriched  lower_right  day7      99
+## 228        12 mould1 enriched  lower_right  day8     143
+## 229        16 paper8 enriched  lower_right  day3       4
+## 230        16 paper8 enriched  lower_right  day4      14
+## 231        16 paper8 enriched  lower_right  day5      38
+## 232        16 paper8 enriched  lower_right  day6      65
+## 233        16 paper8 enriched  lower_right  day7     100
+## 234        16 paper8 enriched  lower_right  day8     111
+## 235        17 mould2 enriched  lower_right  day3       3
+## 236        17 mould2 enriched  lower_right  day4      23
+## 237        17 mould2 enriched  lower_right  day5      68
+## 238        17 mould2 enriched  lower_right  day6      93
+## 239        17 mould2 enriched  lower_right  day7     126
+## 240        17 mould2 enriched  lower_right  day8     144
+## 241        18 paper4 water     upper_right  day3       2
+## 242        18 paper4 water     upper_right  day4      11
+## 243        18 paper4 water     upper_right  day5      47
+## 244        18 paper4 water     upper_right  day6      59
+## 245        18 paper4 water     upper_right  day7      81
+## 246        18 paper4 water     upper_right  day8     102
+## 247        16 mould1 water     upper_right  day3       4
+## 248        16 mould1 water     upper_right  day4      21
+## 249        16 mould1 water     upper_right  day5      63
+## 250        16 mould1 water     upper_right  day6      75
+## 251        16 mould1 water     upper_right  day7      87
+## 252        16 mould1 water     upper_right  day8      97
+## 253        19 paper8 water     upper_right  day3       1
+## 254        19 paper8 water     upper_right  day4      13
+## 255        19 paper8 water     upper_right  day5      60
+## 256        19 paper8 water     upper_right  day6      58
+## 257        19 paper8 water     upper_right  day7      76
+## 258        19 paper8 water     upper_right  day8      86
+## 259        17 mould2 water     upper_right  day3      10
+## 260        17 mould2 water     upper_right  day4      22
+## 261        17 mould2 water     upper_right  day5      54
+## 262        17 mould2 water     upper_right  day6      80
+## 263        17 mould2 water     upper_right  day7      96
+## 264        17 mould2 water     upper_right  day8     109
+## 265        18 paper4 water     lower_right  day3       2
+## 266        18 paper4 water     lower_right  day4      15
+## 267        18 paper4 water     lower_right  day5      33
+## 268        18 paper4 water     lower_right  day6      64
+## 269        18 paper4 water     lower_right  day7      75
+## 270        18 paper4 water     lower_right  day8      83
+## 271        18 mould1 water     lower_right  day3       2
+## 272        18 mould1 water     lower_right  day4      19
+## 273        18 mould1 water     lower_right  day5      52
+## 274        18 mould1 water     lower_right  day6      82
+## 275        18 mould1 water     lower_right  day7      98
+## 276        18 mould1 water     lower_right  day8     113
+## 277        19 paper8 water     lower_right  day3       4
+## 278        19 paper8 water     lower_right  day4      16
+## 279        19 paper8 water     lower_right  day5      39
+## 280        19 paper8 water     lower_right  day6      82
+## 281        19 paper8 water     lower_right  day7     111
+## 282        19 paper8 water     lower_right  day8     125
+## 283        14 mould2 water     lower_right  day3       4
+## 284        14 mould2 water     lower_right  day4      26
+## 285        14 mould2 water     lower_right  day5      57
+## 286        14 mould2 water     lower_right  day6      72
+## 287        14 mould2 water     lower_right  day7      85
+## 288        14 mould2 water     lower_right  day8      93</code></pre>
 </div>
 </div>
 
