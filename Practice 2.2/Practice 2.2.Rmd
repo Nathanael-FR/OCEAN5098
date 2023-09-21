@@ -127,3 +127,5 @@ rairuoho_formated <- rairuoho %>%
 
 print(rairuoho_formated,n=Inf)
 ```
+
+VD: perfect. This edit so that you know how to pull my request in your code. 
