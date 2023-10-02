@@ -84,6 +84,8 @@ BUBBLE_DIET <- list(df_reformated,
                     it was more instinctive to get it on the first df. See the example below :"
                     )
 
+# I entirely agree with you, but the aim was to move around with objects extracted from a data frame. Your solution  is indeed more elegant, and I can see it is very easy for you :) Very good. 
+
 BUBBLE_DIET
 ```
 ### Full code
