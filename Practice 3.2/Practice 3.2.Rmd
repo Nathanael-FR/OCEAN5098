@@ -1,5 +1,5 @@
 ---
-title: "Practice 2.2"
+title: "Practice 3.2"
 author: "Nathanaël LAHARY : T12508101"
 date: "2023-09-19"
 output: html_document
@@ -83,8 +83,6 @@ BUBBLE_DIET <- list(df_reformated,
                     would be easier to do on a wide df than on a long one. Like the weight_loss%, for me
                     it was more instinctive to get it on the first df. See the example below :"
                     )
-
-# I entirely agree with you, but the aim was to move around with objects extracted from a data frame. Your solution  is indeed more elegant, and I can see it is very easy for you :) Very good. 
 
 BUBBLE_DIET
 ```

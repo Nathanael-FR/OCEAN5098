@@ -6,6 +6,7 @@ before_diet <- c(104,95,87,77,112)
 after_diet <- c(96,91,81,75,118)
 df <- data.frame(before_diet,after_diet) 
 row.names(df) <- c("subject_1","subject_2","subject_3","subject_4","subject_5")
+row
 
 library(dplyr)
 library(tidyr)
