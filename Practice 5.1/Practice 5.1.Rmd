@@ -1,0 +1,148 @@
+---
+title: "Practice 5.1"
+author: "Nathanaël LAHARY"
+date: "2023-10-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Code 
+
+Github reposit : [link](https://github.com/Nathanael-FR/OCEAN5098)
+
+# Objective
+
+To practice the leaflet library and in order to prepare the final project, I will display a map of France showing the production of electricity for a certain year at a certain scale. To do so, we will download a dataset and shapefile from a french database website :  [data.gouv.fr](https://www.data.gouv.fr/fr/)
+
+The dataset will provide the data to see how many facilities produce electricity in France, in which department they are each located, and how much they can produce to the maximum (It was really hard to find a dataset to see how much each of the single facilities actually produced during the whole year).
+
+The shapefile will provide the polygons objects for each department so we can map the hypothetically "max" production of electricity in France.
+
+> Data used :
+
+* National Register of Electricity Generation and Storage Facilities in France :
+[download dataset](https://www.data.gouv.fr/fr/datasets/registre-national-des-installations-de-production-et-de-stockage-delectricite-au-31-12-2022/)
+
+* Contours of French departments from OpenStreetMap :
+[download dataset](https://www.data.gouv.fr/fr/datasets/contours-des-departements-francais-issus-d-openstreetmap/)
+
+### Import the libraries
+
+```{r libraries, message=FALSE}
+library(leaflet)
+library(sf)
+library(tidyr)
+library(dplyr)
+library(stringi) # To clean the text  
+```
+
+### Import the data
+
+```{r data, echo=TRUE}
+setwd("C:/Users/natha/Documents/R_NTU_2023/Project")
+
+
+df <- read.csv("data/registre-national-installation-production-stockage-electricite-agrege_ODRE.csv",sep = ";")
+geo_data = st_read("données geospatiales/departements/departement.shp", quiet = TRUE)
+
+# Simplify the geometry unless the size of the map will be ~60Mo
+geo_data <- st_simplify(geo_data, dTolerance = 70)
+```
+
+### Cleaning the data and overview
+
+Let's keep only the department, the type of energy used to produce electricity, and the maximum power of each facility (in MWh)
+```{r cleaning}
+col <- c("departement","filiere","puismaxinstallee" )
+df <- df[,col]
+
+head(df,10)
+
+# Which energies are used to produce electricity, and how many facilities deployed in France for each
+table(df$filiere) 
+
+```
+As we can see, since some values in the "filière" and "departement" columns are written with accents, they are printed with a certain encoding in the console. We might to get over it to avoid any issue when we will try to match them with the values in the geo_data dataframe.
+
+
+```{r encoding}
+# Use a proper encoding, so the "è" are no longer read as "<e8>" 
+Encoding(df$departement)<-'latin1'   
+
+# Replace all spaces by "-" in the department names
+df$departement <- gsub(" ", "-", df$departement)
+geo_data$nom <- gsub(" ", "-", geo_data$nom)
+
+# Remove all the accent : "è" "é" --> "e"
+df$departement <- stri_trans_general(df$departement, "Latin-ASCII")
+geo_data$nom <- stri_trans_general(geo_data$nom, "Latin-ASCII")
+
+print(geo_data$nom)
+```
+
+Now let's sum every maximum power of each facilities in each department
+```{r subset}
+df_puis <- df %>%
+  group_by(departement) %>%
+  summarise(SumMaxPowInstalled = sum(coalesce(puismaxinstallee, 0))) # We assume NA values = 0 
+
+df_puis
+```
+
+Finally, we can merge the 2 datasets to match the polygons of each department with the maximum power for each.
+
+```{r final_set}
+geo_data_with_pow <- left_join(geo_data, df_puis, by = c("nom" = "departement"))
+geo_data_with_pow <- geo_data_with_pow[,c("nom","SumMaxPowInstalled")]
+head(geo_data_with_pow, 10)
+```
+
+### Mapping
+
+Now let's display our data on a map using leaflet.
+
+```{r mapping}
+# Create a color palette
+color_palette <- colorNumeric(palette = c("lightyellow", "yellow", "orange", "red", "darkred"),
+                           domain = geo_data_with_pow$SumMaxPowInstalled,
+                           na.color = "grey")
+
+
+map_region <- leaflet(data = geo_data_with_pow) %>%
+  # addProviderTiles(provider = providers$OpenStreetMap.France) %>%
+  setView(lng = -2.3508, lat = 46.8566, zoom = 5 ) %>%
+  addPolygons(fillColor = ~color_palette(SumMaxPowInstalled),
+              fillOpacity = 0.7,
+              color = "black",
+              weight = 1,
+              label = ~paste("Department :",nom, "| Max.Power Installed :", SumMaxPowInstalled)) %>%
+  addLegend( 
+    pal = color_palette,
+    values = ~SumMaxPowInstalled,
+    title = "Max. Power Installed (MWh) (31/08/2023) </br> Source : Opendata Réseaux-Energies",
+    position = "bottomleft",
+    na.label = "Unavailable",
+    )  %>%
+  addMarkers(lng = 2.2151292829731215, lat = 48.819804719338165, label = "My Home")
+  # A marker for where I'm born
+
+
+# I couldn't jump a line between "Departement:"nom and "Max.Power Installed :", SumPowMaxInstalled
+# I tried with mutate and paste to create a new column with the elements spaced with the html element </br> but It didn't work :
+
+# geo_data_with_pow <- geo_data_with_pow %>%
+#   na.omit(geo_data_with_pow) %>%
+#   mutate(label = paste("Departement:", nom, "Max.Power Installed:", SumPowMaxInstalled, sep = "</br>"))
+
+#  or  mutate(label = paste( c("Departement:", nom,), c("Max.Power Installed:", SumPowMaxInstalled), sep = "</br>"))
+
+map_region
+```
+
+### Disclaimer 
+
+**I couldn't find a similar map on internet to check the results.**
+
